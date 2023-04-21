@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: python:3.10-slim-bullseye
+Stage: spython-base
+
+%files
+main.py /app/
+requirements.txt /app/
+%post
+# docker build -t mymnist .
+# docker run -it mymnist
+
+# with outfile
+# docker run -it mymnist 2>&1 | tee caraline-docker-run.out
+
+
+
+# Set up a working folder and install the pre-reqs
+mkdir -p /app
+cd /app
+
+# add everything from here to app
+
+pip install -r requirements.txt
+
+%runscript
+cd /app
+exec /bin/bash python main.py --dry-run --epochs 1 "$@"
+%startscript
+cd /app
+exec /bin/bash python main.py --dry-run --epochs 1 "$@"
